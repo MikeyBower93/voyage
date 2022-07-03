@@ -216,46 +216,46 @@ resource "aws_ecs_task_definition" "task_definition" {
 # ECS cluster
 data "aws_caller_identity" "current" {}
 
-resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "${var.app_name}_cluster"
-}
+# resource "aws_ecs_cluster" "ecs_cluster" {
+#   name = "${var.app_name}_cluster"
+# }
 
-resource "aws_ecs_service" "service" {
-  name    = "${var.app_name}_service"
-  cluster = aws_ecs_cluster.ecs_cluster.id
+# resource "aws_ecs_service" "service" {
+#   name    = "${var.app_name}_service"
+#   cluster = aws_ecs_cluster.ecs_cluster.id
 
-  task_definition = "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:task-definition/${aws_ecs_task_definition.task_definition.family}:${var.task_version}"
-  desired_count   = 2
-  launch_type     = "FARGATE"
-  network_configuration {
-    security_groups  = [aws_security_group.security_group.id]
-    subnets          =  data.aws_subnet_ids.vpc.ids
-    assign_public_ip = true
-  }
-  load_balancer {
-    target_group_arn = aws_lb_target_group.lb_target_group.arn
-    container_name   = var.app_name
-    container_port   = "4000"
-  }
-}
+#   task_definition = "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:task-definition/${aws_ecs_task_definition.task_definition.family}:${var.task_version}"
+#   desired_count   = 2
+#   launch_type     = "FARGATE"
+#   network_configuration {
+#     security_groups  = [aws_security_group.security_group.id]
+#     subnets          =  data.aws_subnet_ids.vpc.ids
+#     assign_public_ip = true
+#   }
+#   load_balancer {
+#     target_group_arn = aws_lb_target_group.lb_target_group.arn
+#     container_name   = var.app_name
+#     container_port   = "4000"
+#   }
+# }
 
-resource "aws_security_group" "security_group" {
-  name        = "${var.app_name}_ecs"
-  description = "Allow all outbound traffic"
-  vpc_id      = aws_default_vpc.default.id
+# resource "aws_security_group" "security_group" {
+#   name        = "${var.app_name}_ecs"
+#   description = "Allow all outbound traffic"
+#   vpc_id      = aws_default_vpc.default.id
 
-  ingress {
-    description = "HTTP/S Traffic"
-    from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = [aws_default_vpc.default.cidr_block]
-  }
+#   ingress {
+#     description = "HTTP/S Traffic"
+#     from_port   = 0
+#     to_port     = 65535
+#     protocol    = "tcp"
+#     cidr_blocks = [aws_default_vpc.default.cidr_block]
+#   }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+# }

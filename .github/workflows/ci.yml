@@ -1,4 +1,4 @@
-name: ECS DEPLOYMENT
+name: Apollo Deploy
 
 on:
   push:
@@ -28,20 +28,12 @@ jobs:
         docker build --build-arg APP_VSN=$(APP_VSN) \
         --build-arg MIX_ENV=prod \
         --build-arg SECRET_KEY_BASE=$(SECRET_KEY_BASE) \
-        -t your_ecr_url:$(APP_VSN)-$(BUILD) \
         -t your_ecr_url:latest .
       env:
         SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
       working-directory: apollo
     - name: Push Docker Image
-      run: |
-        APP_NAME ?= `grep 'app:' mix.exs | sed -e 's/\[//g' -e 's/ //g' -e 's/app://' -e 's/[:,]//g'`
-        APP_VSN ?= `grep 'version:' mix.exs | cut -d '"' -f2`
-        BUILD ?= `git rev-parse --short HEAD`
-
-        eval `aws ecr get-login --no-include-email --region eu-west-2`
-        docker push your_ecr_url:$(APP_VSN)-$(BUILD)
-        docker push your_ecr_url:latest
+      run: docker push 426768827450.dkr.ecr.eu-west-2.amazonaws.com/voyage-repo:latest
       working-directory: apollo
   
   deploy:
@@ -60,5 +52,5 @@ jobs:
         aws-region: eu-west-2
 
     - name: Deploy
-      run: ./bin/ecs-deploy -c voyage_cluster -n voyage_service -i your_ecr_url:$(APP_VSN)-$(BUILD) -r eu-west-2 -t 300
+      run: ./bin/ecs-deploy -c voyage_cluster -n voyage_service -i 426768827450.dkr.ecr.eu-west-2.amazonaws.com/voyage-repo:latest -r eu-west-2 -t 300
       working-directory: apollo
