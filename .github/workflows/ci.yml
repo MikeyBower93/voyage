@@ -30,7 +30,7 @@ jobs:
       working-directory: apollo
     - name: Push Docker Image
       run: |
-        aws ecr get-login-password | docker login --username AWS --password-stdin 426768827450dkr.ecr.eu-west-2.amazonaws.com
+        aws ecr get-login-password | docker login --username AWS --password-stdin 426768827450.dkr.ecr.eu-west-2.amazonaws.com
         docker push 426768827450.dkr.ecr.eu-west-2.amazonaws.com/voyage-repo:latest
       working-directory: apollo
   
