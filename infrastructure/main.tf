@@ -96,7 +96,7 @@ output "dns" {
 }
 
 variable "task_version" {
-  default = 5
+  default = 8
 }
 
 # ECS container rules

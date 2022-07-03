@@ -1,3 +1,4 @@
 # voyage
 
-How to deploy for first time (no subnets, and possible task definitions already existing)
+## Deployment
+- When provisioning the infrastructure for the first time you need to take the ECR output URL and update the github actions with that URL.
