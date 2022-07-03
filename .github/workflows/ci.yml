@@ -31,8 +31,6 @@ jobs:
         -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
 
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
-        # echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       env:
         SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
         IMAGE_TAG:  latest
@@ -42,7 +40,7 @@ jobs:
 
     - name: Download task definition
       run: |
-        aws ecs describe-task-definition --task-definition voyage_task:8
+        aws ecs describe-task-definition --task-definition voyage_task:4
 
     # - name: Fill in the new image ID in the Amazon ECS task definition
     #   id: task-def
