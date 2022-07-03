@@ -29,11 +29,12 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       env:
         SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
         IMAGE_TAG:  latest
         ECR_REPOSITORY: voyage-repo
         ECR_REGISTRY: 426768827450.dkr.ecr.eu-west-2.amazonaws.com
       working-directory: apollo
 
-    - name: Download Task Definition
-      run: |
-        aws ecs run-task --task-definition voyage_task:5 --cluster voyage_cluster
+    # - name: Download Task Definition
+    #   run: |
+    #     aws ecs run-task --task-definition voyage_task:5 --cluster voyage_cluster

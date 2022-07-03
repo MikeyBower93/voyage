@@ -96,7 +96,7 @@ output "dns" {
 }
 
 variable "task_version" {
-  default = 1
+  default = 5
 }
 
 # ECS container rules
@@ -202,16 +202,7 @@ resource "aws_ecs_task_definition" "task_definition" {
           "containerPort": 4000
         }
       ],
-      "environment": [
-        {
-          "name": "SECRET_KEY_BASE",
-          "value": "dummy"
-        },
-        {
-          "name": "DATABASE_URL",
-          "value": "dummy"
-        }
-      ],
+      "environment": [],
       "mountPoints": [],
       "volumesFrom": [],
       "essential": true,
