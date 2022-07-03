@@ -25,12 +25,7 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        docker build \
-        --build-arg MIX_ENV=prod \
-        --build-arg SECRET_KEY_BASE=$(SECRET_KEY_BASE) \
-        --build-arg DATABASE_URL=dummy \
-        -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       env:
         SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
@@ -41,4 +36,4 @@ jobs:
 
     - name: Download Task Definition
       run: |
-        aws ecs run-task --task-definition voyage_task:5
+        aws ecs run-task --task-definition voyage_task:5 --cluster voyage_cluster
