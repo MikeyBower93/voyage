@@ -41,22 +41,4 @@ jobs:
 
     - name: Download Task Definition
       run: |
-        aws ecs describe-task-definition --task-definition voyage_task:4
-
-    # - name: Fill in the new image ID in the Amazon ECS task definition
-    #   id: task-def
-    #   uses: aws-actions/amazon-ecs-render-task-definition@v1
-    #   with:
-    #     task-definition: task-definition.json
-    #     container-name: voyage
-    #     image: ${{ steps.build-image.outputs.image }}
-    #     working-directory: apollo
-
-    # - name: Deploy Amazon ECS task definition
-    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-    #   with:
-    #     task-definition: ${{ steps.task-def.outputs.task-definition }}
-    #     service: voyage_service
-    #     cluster: voyage_cluster
-    #     wait-for-service-stability: true
-    #     working-directory: apollo
+        aws ecs run-task --task-definition voyage_task:5

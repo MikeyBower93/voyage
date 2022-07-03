@@ -202,7 +202,16 @@ resource "aws_ecs_task_definition" "task_definition" {
           "containerPort": 4000
         }
       ],
-      "environment": [],
+      "environment": [
+        {
+          "name": "SECRET_KEY_BASE",
+          "value": "dummy"
+        },
+        {
+          "name": "DATABASE_URL",
+          "value": "dummy"
+        }
+      ],
       "mountPoints": [],
       "volumesFrom": [],
       "essential": true,
