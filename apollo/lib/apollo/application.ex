@@ -9,7 +9,8 @@ defmodule Apollo.Application do
   def start(_type, _args) do
     children = [
       # Start the Ecto repository
-      Apollo.Repo,
+      # TODO: uncomment when we create a database
+      # Apollo.Repo,
       # Start the Telemetry supervisor
       ApolloWeb.Telemetry,
       # Start the PubSub system
