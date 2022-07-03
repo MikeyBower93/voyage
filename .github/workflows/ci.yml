@@ -21,10 +21,6 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        APP_NAME ?= `grep 'app:' mix.exs | sed -e 's/\[//g' -e 's/ //g' -e 's/app://' -e 's/[:,]//g'`
-        APP_VSN ?= `grep 'version:' mix.exs | cut -d '"' -f2`
-        BUILD ?= `git rev-parse --short HEAD`
-
         docker build --build-arg APP_VSN=$(APP_VSN) \
         --build-arg MIX_ENV=prod \
         --build-arg SECRET_KEY_BASE=$(SECRET_KEY_BASE) \
