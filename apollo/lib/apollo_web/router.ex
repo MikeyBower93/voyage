@@ -20,10 +20,11 @@ defmodule ApolloWeb.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", ApolloWeb do
-  #   pipe_through :api
-  # end
+  scope "/", ApolloWeb do
+    pipe_through :api
+
+    get "/health", HealthController, :index
+  end
 
   # Enables LiveDashboard only for development
   #
