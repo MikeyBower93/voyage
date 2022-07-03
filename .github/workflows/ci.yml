@@ -51,7 +51,5 @@ jobs:
         aws-region: eu-west-2
 
     - name: Deploy
-      run: |
-        chmod +X ./bin/ecs-deploy
-        ./bin/ecs-deploy -c voyage_cluster -n voyage_service -i 426768827450.dkr.ecr.eu-west-2.amazonaws.com/voyage-repo:latest -r eu-west-2 -t 300
+      run: ./bin/ecs-deploy -c voyage_cluster -n voyage_service -i 426768827450.dkr.ecr.eu-west-2.amazonaws.com/voyage-repo:latest -r eu-west-2 -t 300
       working-directory: apollo
