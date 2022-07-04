@@ -8,7 +8,7 @@ defmodule Apollo.Application do
   @impl true
   def start(_type, _args) do
     topologies = [
-      voyage_app: [
+      voyage: [
         strategy: Cluster.Strategy.DNSPoll,
         config: [
           polling_interval: 1000,
