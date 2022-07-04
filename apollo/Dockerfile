@@ -83,7 +83,7 @@ RUN chown nobody /app
 
 # set runner ENV
 ENV MIX_ENV="prod"
-ENV DATABASE_URL="dummy"
+ENV DATABASE_URL= ${DATABASE_URL}
 ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
 
 # Only copy the final release from the build stage
