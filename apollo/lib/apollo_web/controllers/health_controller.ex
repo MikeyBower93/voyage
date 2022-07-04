@@ -4,6 +4,6 @@ defmodule ApolloWeb.HealthController do
   def index(conn, _params) do
     conn
     |> put_status(200)
-    |> json(%{healhy: true, node_name: node()})
+    |> json(%{healhy: true, node_name: node(), other_nodes: Node.list()})
   end
 end
