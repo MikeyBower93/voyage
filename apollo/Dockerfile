@@ -74,7 +74,7 @@ ARG SECRET_KEY_BASE
 ARG DATABASE_URL
 ARG RELEASE_COOKIE
 
-RUN apt-get update -y && apt-get install -y libstdc++6 openssl libncurses5 locales \
+RUN apt-get update -y && apt-get install -y libstdc++6 openssl libncurses5 locales curl jq \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # Set the locale
@@ -86,7 +86,6 @@ ENV LC_ALL en_US.UTF-8
 
 WORKDIR "/app"
 RUN chown nobody /app
-RUN apk add --no-cache openssl ncurses-libs curl jq
 
 # set runner ENV
 ENV MIX_ENV="prod"
