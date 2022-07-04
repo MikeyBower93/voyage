@@ -12,7 +12,7 @@ defmodule Apollo.Application do
         strategy: Cluster.Strategy.DNSPoll,
         config: [
           polling_interval: 1000,
-          query: "voyage.local",
+          query: "voyage.voyage.local",
           node_basename: "voyage"
         ]
       ]
