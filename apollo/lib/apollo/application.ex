@@ -7,10 +7,22 @@ defmodule Apollo.Application do
 
   @impl true
   def start(_type, _args) do
+    topologies = [
+      voyage_app: [
+        strategy: Cluster.Strategy.DNSPoll,
+        config: [
+          polling_interval: 1000,
+          query: "voyage_app.voyage_app.local",
+          node_basename: "voyage_app"
+        ]
+      ]
+    ]
+
     children = [
       # Start the Ecto repository
-    # TODO: uncomment when we create a database
+      # TODO: uncomment when we create a database
       # Apollo.Repo,
+      {Cluster.Supervisor, [topologies, [name: Apollo.ClusterSupervisor]]},
       # Start the Telemetry supervisor
       ApolloWeb.Telemetry,
       # Start the PubSub system

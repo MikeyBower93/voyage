@@ -72,6 +72,7 @@ FROM ${RUNNER_IMAGE}
 
 ARG SECRET_KEY_BASE
 ARG DATABASE_URL
+ARG RELEASE_COOKIE
 
 RUN apt-get update -y && apt-get install -y libstdc++6 openssl libncurses5 locales \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
@@ -85,11 +86,13 @@ ENV LC_ALL en_US.UTF-8
 
 WORKDIR "/app"
 RUN chown nobody /app
+RUN apk add --no-cache openssl ncurses-libs curl jq
 
 # set runner ENV
 ENV MIX_ENV="prod"
 ENV DATABASE_URL=${DATABASE_URL}
 ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
+ENV RELEASE_COOKIE=${RELEASE_COOKIE}
 
 # Only copy the final release from the build stage
 COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/apollo ./

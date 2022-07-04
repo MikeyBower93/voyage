@@ -95,10 +95,6 @@ output "dns" {
   value = aws_lb.load_balancer.dns_name
 }
 
-variable "task_version" {
-  default = 8
-}
-
 # ECS container rules
 resource "aws_iam_role" "ecs_role" {
   name               = "ecs_role"
@@ -224,7 +220,6 @@ resource "aws_ecs_service" "service" {
   name    = "${var.app_name}_service"
   cluster = aws_ecs_cluster.ecs_cluster.id
 
-  task_definition = "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:task-definition/${aws_ecs_task_definition.task_definition.family}:${var.task_version}"
   desired_count   = 2
   launch_type     = "FARGATE"
   network_configuration {
@@ -236,6 +231,10 @@ resource "aws_ecs_service" "service" {
     target_group_arn = aws_lb_target_group.lb_target_group.arn
     container_name   = var.app_name
     container_port   = "4000"
+  }
+  service_registries {
+    registry_arn =  aws_service_discovery_service.service_discovery.arn
+    container_name = var.app_name
   }
 }
 
@@ -257,5 +256,27 @@ resource "aws_security_group" "security_group" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# Service discovery for elixir clustering
+resource "aws_service_discovery_private_dns_namespace" dns_namespace {
+  name        = "${var.app_name}.local"
+  description = "some desc"
+  vpc         = aws_default_vpc.default.id
+}
+
+resource "aws_service_discovery_service" service_discovery {
+  name = var.app_name
+
+  dns_config {
+    namespace_id = aws_service_discovery_private_dns_namespace.dns_namespace.id
+
+    dns_records {
+      ttl  = 10
+      type = "A"
+    }
+
+    routing_policy = "MULTIVALUE"
   }
 }
