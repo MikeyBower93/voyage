@@ -40,6 +40,14 @@ jobs:
         ECR_REGISTRY: 426768827450.dkr.ecr.eu-west-2.amazonaws.com
       working-directory: apollo
 
-    # - name: Download Task Definition
-    #   run: |
-    #     aws ecs run-task --task-definition voyage_task:5 --cluster voyage_cluster
+    - name: Download task definition
+      run: |
+        aws ecs describe-task-definition --task-definition my-task-definition-family --query taskDefinition > task-definition.json
+
+    - name: Deploy to Amazon ECS
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        service: voyage_service
+        cluster: voyage_cluster
+        wait-for-service-stability: true
