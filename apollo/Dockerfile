@@ -15,6 +15,8 @@
 ARG ELIXIR_VERSION=1.13.4
 ARG OTP_VERSION=24.3.3
 ARG DEBIAN_VERSION=bullseye-20210902-slim
+ARG SECRET_KEY_BASE
+ARG DATABASE_URL
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
@@ -83,7 +85,7 @@ RUN chown nobody /app
 
 # set runner ENV
 ENV MIX_ENV="prod"
-ENV DATABASE_URL="dummy"
+ENV DATABASE_URL= ${DATABASE_URL}
 ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
 
 # Only copy the final release from the build stage
