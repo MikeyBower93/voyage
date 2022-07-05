@@ -6,7 +6,7 @@ on:
 
 jobs:
   cicd:
-    uses: ./elixir-ecs-cicd.yml
+    uses: /.github/workflows/elixir-ecs-cicd.yml
     with:
       SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
