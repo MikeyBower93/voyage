@@ -1,0 +1,17 @@
+name: Foo CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  cicd:
+    uses: ./elixir-ecs-cicd.yml
+    with:
+      SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      ECR_REPOSITORY: foo-repo
+      ECR_REGISTRY: 426768827450.dkr.ecr.eu-west-2.amazonaws.com
+      ECS_SERVICE: foo_service
+      TASK_NAME: foo_task
+      WORKING_DIR: apollo

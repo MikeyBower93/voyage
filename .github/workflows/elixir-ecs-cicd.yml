@@ -55,7 +55,7 @@ jobs:
         IMAGE_TAG:  latest
         ECR_REPOSITORY: ${{ inputs.ECR_REPOSITORY }}
         ECR_REGISTRY: ${{ inputs.ECR_REGISTRY }}
-      working-directory: apollo
+      working-directory: ${{ inputs.WORKING_DIR }}
 
     - name: Download task definition
       run: |
