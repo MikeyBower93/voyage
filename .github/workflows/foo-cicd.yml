@@ -8,10 +8,11 @@ jobs:
   cicd:
     uses: MikeyBower93/voyage/.github/workflows/elixir-ecs-cicd.yml@main
     with:
-      SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
       ECR_REPOSITORY: foo-repo
       ECR_REGISTRY: 426768827450.dkr.ecr.eu-west-2.amazonaws.com
       ECS_SERVICE: foo_service
       TASK_NAME: foo_task
       WORKING_DIR: apollo
+    secrets:
+      SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
