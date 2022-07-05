@@ -9,7 +9,7 @@ jobs:
     name: CI/CD
     runs-on: ubuntu-latest
     steps:
-      - uses: ./elixir-ecs-cicd
+      - uses: ./.github/workflows/elixir-ecs-cicd
         with:
           username: ${{ inputs.username }}
           token: ${{ secrets.envPAT }}
