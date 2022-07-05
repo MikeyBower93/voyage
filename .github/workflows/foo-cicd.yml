@@ -13,6 +13,9 @@ jobs:
       ECS_SERVICE: foo_service
       TASK_NAME: foo_task
       WORKING_DIR: apollo
+      AWS_REGION: eu-west-2
     secrets:
       SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }
