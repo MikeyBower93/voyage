@@ -6,7 +6,7 @@ on:
 
 jobs:
   cicd:
-    uses: https://github.com/MikeyBower93/voyage/blob/main/.github/workflows/elixir-ecs-cicd.yml@main
+    uses: MikeyBower93/voyage/blob/main/.github/workflows/elixir-ecs-cicd.yml@main
     with:
       SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
