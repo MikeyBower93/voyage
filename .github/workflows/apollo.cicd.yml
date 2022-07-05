@@ -1,0 +1,15 @@
+name: Apollo CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  cicd:
+    name: CI/CD
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./elixir-ecs-cicd
+        with:
+          username: ${{ inputs.username }}
+          token: ${{ secrets.envPAT }}

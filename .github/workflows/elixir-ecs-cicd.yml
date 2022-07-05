@@ -1,8 +1,25 @@
-name: Apollo CI/CD
+name: Elixir ECS CI/CD
 
 on:
-  push:
-    branches: [ main ]
+  workflow_call:
+    inputs:
+      ECR_REGISTRY:
+        required: true
+        type: string
+      ECR_REPOSITORY:
+        required: true
+        type: string
+      TASK_NAME:
+        required: true
+        type: string
+      ECS_SERVICE:
+        required: true
+        type: string
+    secrets:
+      DATABASE_URL:
+        required: true
+      SECRET_KEY_BASE:
+        required: true
 
 jobs:
   build:
@@ -36,18 +53,18 @@ jobs:
         SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
         IMAGE_TAG:  latest
-        ECR_REPOSITORY: apollo-repo
-        ECR_REGISTRY: 426768827450.dkr.ecr.eu-west-2.amazonaws.com
+        ECR_REPOSITORY: ${{ inputs.ECR_REPOSITORY }}
+        ECR_REGISTRY: ${{ inputs.ECR_REGISTRY }}
       working-directory: apollo
 
     - name: Download task definition
       run: |
-        aws ecs describe-task-definition --task-definition apollo_task --query taskDefinition > task-definition.json
+        aws ecs describe-task-definition --task-definition ${{ inputs.TASK_NAME }} --query taskDefinition > task-definition.json
 
     - name: Deploy to Amazon ECS
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: task-definition.json
-        service: apollo_service
+        service: ${{ inputs.ECS_SERVICE }}
         cluster: ecs_cluster
         wait-for-service-stability: true
