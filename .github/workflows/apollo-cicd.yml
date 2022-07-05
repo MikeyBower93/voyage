@@ -1,4 +1,4 @@
-name: Apollo Deploy
+name: Apollo CI/CD
 
 on:
   push:
@@ -36,18 +36,18 @@ jobs:
         SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
         IMAGE_TAG:  latest
-        ECR_REPOSITORY: voyage-repo
+        ECR_REPOSITORY: apollo-repo
         ECR_REGISTRY: 426768827450.dkr.ecr.eu-west-2.amazonaws.com
       working-directory: apollo
 
     - name: Download task definition
       run: |
-        aws ecs describe-task-definition --task-definition voyage_task --query taskDefinition > task-definition.json
+        aws ecs describe-task-definition --task-definition apollo_task --query taskDefinition > task-definition.json
 
     - name: Deploy to Amazon ECS
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: task-definition.json
-        service: voyage_service
+        service: apollo_service
         cluster: voyage_cluster
         wait-for-service-stability: true

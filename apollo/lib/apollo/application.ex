@@ -8,12 +8,12 @@ defmodule Apollo.Application do
   @impl true
   def start(_type, _args) do
     topologies = [
-      voyage: [
+      apollo: [
         strategy: Cluster.Strategy.DNSPoll,
         config: [
           polling_interval: 1000,
-          query: "voyage.voyage.local",
-          node_basename: "voyage"
+          query: "apollo.apollo.local",
+          node_basename: "apollo"
         ]
       ]
     ]
