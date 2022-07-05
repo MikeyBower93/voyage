@@ -15,6 +15,9 @@ on:
       ECS_SERVICE:
         required: true
         type: string
+      WORKING_DIR:
+        required: true
+        type: string
     secrets:
       DATABASE_URL:
         required: true
