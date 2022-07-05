@@ -172,7 +172,7 @@ resource "aws_ecs_task_definition" "task_definition" {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "${aws_cloudwatch_log_group.log_group.name}",
-          "awslogs-region": "eu-west-2",
+          "awslogs-region": "${var.region}",
           "awslogs-stream-prefix": "ecs"
         }
       },
