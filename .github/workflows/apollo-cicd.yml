@@ -49,5 +49,5 @@ jobs:
       with:
         task-definition: task-definition.json
         service: apollo_service
-        cluster: voyage_cluster
+        cluster: ecs_cluster
         wait-for-service-stability: true
