@@ -105,11 +105,11 @@ resource "aws_ecs_task_definition" "task_definition" {
       "secrets": [
         {
           "name": "SECRET_KEY_BASE",
-          "valueFrom": "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:SECRET_KEY_BASE"
+          "valueFrom": "${aws_secretsmanager_secret_version.service_secret_version.arn}"
         },
         {
           "name": "DATABASE_URL",
-          "valueFrom": "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:DATABASE_URL"
+          "valueFrom": "${aws_secretsmanager_secret_version.service_secret_version.arn}"
         }
       ],
       "mountPoints": [],
