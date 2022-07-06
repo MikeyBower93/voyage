@@ -4,8 +4,8 @@ provider "aws" {
 }
 
 module "apollo" {
-  source = "./modules/apollo"
-  region = var.region
-  database_url = var.apollo_database_url
-  secret_key_base = var.apollo_secret_key_base
+  source            = "./modules/apollo"
+  region            = var.region
+  database_password = var.apollo_database_password
+  secret_key_base   = var.apollo_secret_key_base
 }

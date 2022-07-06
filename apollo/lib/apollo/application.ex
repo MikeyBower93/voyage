@@ -20,8 +20,7 @@ defmodule Apollo.Application do
 
     children = [
       # Start the Ecto repository
-      # TODO: uncomment when we create a database
-      # Apollo.Repo,
+      Apollo.Repo,
       {Cluster.Supervisor, [topologies, [name: Apollo.ClusterSupervisor]]},
       # Start the Telemetry supervisor
       ApolloWeb.Telemetry,
