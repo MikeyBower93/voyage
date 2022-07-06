@@ -1,3 +1,3 @@
 #!/bin/sh
-./migrate;
-./server;
+/app/bin/migrate;
+/app/bin/server;
