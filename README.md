@@ -14,7 +14,7 @@ To follow:
 - RabbitMQ for message brokers
 
 ## Directory structure
-- `voyage` - this is the root repo, this is the base mono repo, and is called `voyage` as this demo will be a basic travel booking site
+- `voyage` - this is the root repo, this is the base mono repo, and is called `voyage` as this demo will demonstrate a basic travel/holiday site
 - `infrastructure` - this is the terraform IaC for AWS provisioning
 - `apollo` - this is just a name for one of the elixir backends created (I wanted to name give it a unique name to allow for other service creations in the future to have a semi "micro-service" approach)
 

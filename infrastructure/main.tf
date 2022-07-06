@@ -3,10 +3,9 @@ provider "aws" {
   region  = var.region
 }
 
-# Creation of the elixir backends
-module "apollo_backend" {
-  source = "./modules/aws-elixir-ecs-backend"
-
-  service_name = "apollo"
-  region       = var.region
+module "apollo" {
+  source = "./modules/apollo"
+  region = var.region
+  database_url = var.apollo_database_url
+  secret_key_base = var.apollo_secret_key_base
 }

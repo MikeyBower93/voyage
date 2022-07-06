@@ -1,16 +1,3 @@
-# --- Locate the default VPC
-resource "aws_default_vpc" "default_vpc" {
-  tags = {
-    Name = "Default VPC"
-  }
-}
-
-# --- Set up the ECS cluster and roles for all backend services
-resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "ecs_cluster"
-}
-
-# Roles and permissions for the ECS service
 resource "aws_iam_role" "ecs_role" {
   name               = "${var.service_name}_ecs_role"
   assume_role_policy = <<-EOF
@@ -63,7 +50,9 @@ resource "aws_iam_policy" "ecs_policy" {
               "ecr:GetDownloadUrlForLayer",
               "ecr:BatchGetImage",
               "logs:CreateLogStream",
-              "logs:PutLogEvents"
+              "logs:PutLogEvents",
+              "ssm:GetParameters",
+              "secretsmanager:GetSecretValue"
           ],
           "Resource": "*"
       }
@@ -78,81 +67,10 @@ resource "aws_iam_policy_attachment" "attach_ecs_policy" {
   policy_arn = aws_iam_policy.ecs_policy.arn
 }
 
-#--- Create the ECR repository for the docker images 
-resource "aws_ecr_repository" "repo" {
-  name                 = "${var.service_name}-repo"
-  image_tag_mutability = "MUTABLE"
-
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-}
-
-#--- Create load balancer for inbound public traffic
-resource "aws_security_group" "lb_security_group" {
-  name        = "${var.service_name}_lb_security_group"
-  description = "Allow all outbound traffic and https inbound"
-  vpc_id      = aws_default_vpc.default_vpc.id
-
-  ingress {
-    description = "HTTP"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-resource "aws_lb_target_group" "lb_target_group" {
-  name        = "${var.service_name}-tg"
-  port        = 4000
-  protocol    = "HTTP"
-  vpc_id      = aws_default_vpc.default_vpc.id
-  target_type = "ip"
-  health_check {
-    path = "/health"
-    port = "4000"
-  }
-  stickiness {
-    type            = "lb_cookie"
-    enabled         = "true"
-    cookie_duration = "3600"
-  }
-}
-
-resource "aws_lb" "load_balancer" {
-  name               = "${var.service_name}-lb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.lb_security_group.id]
-  subnets            = data.aws_subnet_ids.vpc.ids
-
-  enable_deletion_protection = false
-}
-
-resource "aws_lb_listener" "ecs_listener" {
-  load_balancer_arn = aws_lb.load_balancer.arn
-  port              = "80"
-  protocol          = "HTTP"
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.lb_target_group.arn
-  }
-}
-
 resource "aws_cloudwatch_log_group" "log_group" {
   name = "/ecs/${var.service_name}"
 }
 
-# --- ECS task definitions
 resource "aws_ecs_task_definition" "task_definition" {
   family                   = "${var.service_name}_task"
   task_role_arn            = aws_iam_role.ecs_role.arn
@@ -184,6 +102,16 @@ resource "aws_ecs_task_definition" "task_definition" {
         }
       ],
       "environment": [],
+      "secrets": [
+        {
+          "name": "SECRET_KEY_BASE",
+          "valueFrom": "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:SECRET_KEY_BASE"
+        },
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:DATABASE_URL"
+        }
+      ],
       "mountPoints": [],
       "volumesFrom": [],
       "essential": true,
@@ -194,7 +122,6 @@ resource "aws_ecs_task_definition" "task_definition" {
   EOF
 }
 
-# --- ECS services
 resource "aws_ecs_service" "service" {
   name            = "${var.service_name}_service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
@@ -236,27 +163,5 @@ resource "aws_security_group" "security_group" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-# --- Service discovery for elixir clustering
-resource "aws_service_discovery_private_dns_namespace" "dns_namespace" {
-  name        = "${var.service_name}.local"
-  description = "Service discovery for elixir clustering"
-  vpc         = aws_default_vpc.default_vpc.id
-}
-
-resource "aws_service_discovery_service" "service_discovery" {
-  name = var.service_name
-
-  dns_config {
-    namespace_id = aws_service_discovery_private_dns_namespace.dns_namespace.id
-
-    dns_records {
-      ttl  = 10
-      type = "A"
-    }
-
-    routing_policy = "MULTIVALUE"
   }
 }

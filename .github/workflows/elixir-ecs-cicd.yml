@@ -22,10 +22,6 @@ on:
         required: true
         type: string
     secrets:
-      DATABASE_URL:
-        required: true
-      SECRET_KEY_BASE:
-        required: true
       AWS_ACCESS_KEY_ID:
         required: true
       AWS_SECRET_ACCESS_KEY:
@@ -60,8 +56,6 @@ jobs:
 
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       env:
-        SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
         IMAGE_TAG:  latest
         ECR_REPOSITORY: ${{ inputs.ECR_REPOSITORY }}
         ECR_REGISTRY: ${{ inputs.ECR_REGISTRY }}

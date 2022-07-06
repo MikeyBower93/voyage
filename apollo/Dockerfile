@@ -15,8 +15,6 @@
 ARG ELIXIR_VERSION=1.13.4
 ARG OTP_VERSION=24.3.3
 ARG DEBIAN_VERSION=bullseye-20210902-slim
-ARG SECRET_KEY_BASE
-ARG DATABASE_URL
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
@@ -70,10 +68,6 @@ RUN mix release
 # the compiled release and other runtime necessities
 FROM ${RUNNER_IMAGE}
 
-ARG SECRET_KEY_BASE
-ARG DATABASE_URL
-ARG RELEASE_COOKIE
-
 RUN apt-get update -y && apt-get install -y libstdc++6 openssl libncurses5 locales curl jq \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
@@ -89,9 +83,6 @@ RUN chown nobody /app
 
 # set runner ENV
 ENV MIX_ENV="prod"
-ENV DATABASE_URL=${DATABASE_URL}
-ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
-ENV RELEASE_COOKIE=${RELEASE_COOKIE}
 
 # Only copy the final release from the build stage
 COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/apollo ./
