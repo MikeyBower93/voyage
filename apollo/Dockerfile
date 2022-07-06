@@ -89,4 +89,4 @@ COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/apollo ./
 
 USER nobody
 
-CMD ["/app/bin/migrate; /app/bin/server;"]
+ENTRYPOINT ["/app/bin/entrypoint.sh"]
