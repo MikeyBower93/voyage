@@ -18,6 +18,7 @@ To follow:
 
 ## Caveats
 - This doesn't create a DNS entry or HTTPs as it was out of scope of this learning process
+- This also doesn't create RDS backups
 
 ## Appendix
 - [Deploying elixir on ECS](https://silbernagel.dev/posts/deploying-elixir-on-ecs-part-1/)
