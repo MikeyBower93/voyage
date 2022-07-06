@@ -1,4 +1,4 @@
 #!/bin/sh
 cd -P -- "$(dirname -- "$0")"
-exec ./apollo eval Apollo.Release.migrate
+exec ./apollo eval Apollo.Release.migrate;
 PHX_SERVER=true exec ./apollo start
