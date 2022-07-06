@@ -24,6 +24,7 @@ defmodule ApolloWeb.Router do
     pipe_through :api
 
     get "/health", HealthController, :index
+    resources "/locations", LocationController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
