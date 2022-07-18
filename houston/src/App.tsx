@@ -13,7 +13,9 @@ function App() {
 
   return (
     <div className="App">
-      {locations.map(location => <div>{location.name}</div>)}
+      <ul>
+        {locations.map(location => <li>{location.name}</li>)}
+      </ul>
     </div>
   );
 }
