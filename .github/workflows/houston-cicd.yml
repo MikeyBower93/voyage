@@ -1,0 +1,15 @@
+name: Houston CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  cicd:
+    uses: MikeyBower93/voyage/.github/workflows/react-s3-cicd.yml@main
+    with:
+      WORKING_DIR: houston
+      AWS_BUCKET: houston-bucket
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

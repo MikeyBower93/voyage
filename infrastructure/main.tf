@@ -9,3 +9,7 @@ module "apollo" {
   database_password = var.apollo_database_password
   secret_key_base   = var.apollo_secret_key_base
 }
+
+module "houston" {
+  source = "./modules/houston" 
+}
