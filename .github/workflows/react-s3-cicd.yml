@@ -23,7 +23,9 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 16
-      - run: npm run build
+      - run: |
+         npm install
+         npm run build
         working-directory: ${{ inputs.WORKING_DIR }}
       - uses: shallwefootball/s3-upload-action@master
         with:
