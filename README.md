@@ -14,7 +14,7 @@ It also demonstrates a mono repo approach, so if you created another elixir serv
 - `voyage` - this is the root repo, this is the base mono repo, and is called `voyage` as this demo will demonstrate a basic travel/holiday site (where you can travel to planets)
 - `infrastructure` - this is the terraform IaC for AWS provisioning
 - `apollo` - this is just a name for one of the elixir backends created (I wanted to name give it a unique name to allow for other service creations in the future to have a semi "micro-service" approach)
-- `houston` -  this is a baic react frontend that gets hosted in S3 which calls the `apollo` Rest API.
+- `houston` -  this is a baic react frontend that gets hosted in S3 which calls the `apollo` Rest API
 
 ## Caveats
 - This doesn't create a DNS entry or HTTPs as it was out of scope of this learning process
